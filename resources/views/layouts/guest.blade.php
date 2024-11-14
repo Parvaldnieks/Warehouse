@@ -15,12 +15,12 @@
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
     <body class="font-sans text-gray-800 bg-gray-200 antialiased">
-        <div class="min-h-screen flex flex-col justify-center items-center py-8 bg-gray-200">
+        <div class="min-h-screen flex flex-col justify-center items-center py-8 bg-gray-800">
             <!-- Logo -->
             <div class="mb-8">
                 <a href="/" class="flex items-center justify-center">
                     <x-application-logo class="w-24 h-24 text-gray-600" />
-                    <span class="text-xl font-bold text-gray-700 ml-2">Warehouse Management</span>
+                    <span class="text-xl font-bold text-yellow-400 ml-2">Warehouse Management</span>
                 </a>
             </div>
 

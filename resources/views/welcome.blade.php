@@ -1,116 +1,61 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>{{ config('app.name', 'Warehouse Management') }}</title>
+    <title>{{ config('app.name', 'Warehouse Management') }}</title>
 
-        <!-- Fonts -->
-        <link rel="preconnect" href="https://fonts.bunny.net">
-        <link href="https://fonts.bunny.net/css?family=figtree:400,600&display=swap" rel="stylesheet" />
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.bunny.net">
+    <link href="https://fonts.bunny.net/css?family=figtree:400,600&display=swap" rel="stylesheet" />
 
-        <!-- Styles -->
-        <style>
-            * {
-                box-sizing: border-box;
-                margin: 0;
-                padding: 0;
-            }
-            html, body {
-                height: 100%;
-                font-family: 'Figtree', sans-serif;
-                background-color: #e5e7eb; /* Light gray */
-                color: #374151; /* Dark gray for text */
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                justify-content: center;
-                text-align: center;
-                overflow: hidden;
-            }
-            .container {
-                flex: 1;
-                display: flex;
-                flex-direction: column;
-                justify-content: center;
-                align-items: center;
-                max-width: 100%;
-            }
-            .title {
-                font-size: 3rem;
-                color: #374151;
-                font-weight: 700;
-                text-transform: uppercase;
-                letter-spacing: 1.5px;
-                margin: 0.5rem 0;
-            }
-            .description {
-                font-size: 1.25rem;
-                color: #4b5563;
-                margin: 0.5rem 0 2rem;
-            }
-            .links {
-                display: flex;
-                gap: 1.5rem;
-                justify-content: center;
-            }
-            .links > a {
-                color: #ffffff;
-                background-color: #374151;
-                padding: 0.75rem 1.5rem;
-                font-weight: 600;
-                font-size: 1rem;
-                text-decoration: none;
-                text-transform: uppercase;
-                border-radius: 5px;
-                transition: background-color 0.3s, color 0.3s;
-            }
-            .links > a:hover {
-                background-color: #4b5563; /* Slightly lighter gray for hover */
-            }
-            footer {
-                width: 100vw; /* Full width of the screen */
-                padding: 1rem;
-                background-color: #374151;
-                color: #ffffff;
-                font-size: 0.875rem;
-                text-align: center;
-                position: relative;
-                bottom: 0;
-            }
-        </style>
-    </head>
-    <body>
-        <div class="container">
-            <div class="title">
-                Welcome to Warehouse Management
-            </div>
+    <!-- Styles (using Tailwind) -->
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+</head>
+<body class="flex flex-col min-h-screen bg-gray-900 text-gray-300">
 
-            <div class="description">
-                Streamline your inventory and optimize warehouse operations efficiently.
-            </div>
+    <!-- Main Container -->
+    <div class="flex-grow flex flex-col items-center justify-center text-center px-4">
+        
+        <!-- Title -->
+        <h1 class="text-4xl sm:text-5xl font-extrabold text-yellow-400 uppercase tracking-wide mb-4">
+            Welcome to Warehouse Management
+        </h1>
 
-            <div class="links">
-                @if (Route::has('login'))
-                    <div class="links">
-                        @auth
-                            <a href="{{ url('/dashboard') }}">Dashboard</a>
-                        @else
-                            <a href="{{ route('login') }}">Log in</a>
+        <!-- Description -->
+        <p class="text-lg sm:text-xl text-yellow-300 mb-6 max-w-xl leading-relaxed">
+            Streamline your inventory and optimize warehouse operations efficiently.
+        </p>
 
-                            @if (Route::has('register'))
-                                <a href="{{ route('register') }}">Register</a>
-                            @endif
-                        @endauth
-                    </div>
-                @endif
-            </div>
+        <!-- Links -->
+        <div class="flex gap-4">
+            @if (Route::has('login'))
+                @auth
+                    <a href="{{ url('/dashboard') }}" 
+                       class="px-6 py-2 bg-yellow-500 text-gray-900 font-semibold rounded-lg hover:bg-yellow-600 transition duration-200">
+                        Dashboard
+                    </a>
+                @else
+                    <a href="{{ route('login') }}" 
+                       class="px-6 py-2 bg-yellow-500 text-gray-900 font-semibold rounded-lg hover:bg-yellow-600 transition duration-200">
+                        Log in
+                    </a>
+                    @if (Route::has('register'))
+                        <a href="{{ route('register') }}" 
+                           class="px-6 py-2 bg-yellow-500 text-gray-900 font-semibold rounded-lg hover:bg-yellow-600 transition duration-200">
+                            Register
+                        </a>
+                    @endif
+                @endauth
+            @endif
         </div>
+    </div>
 
-        <footer>
-            &copy; {{ date('Y') }} Warehouse Management. All rights reserved.
-        </footer>
-    </body>
+    <!-- Footer -->
+    <footer class="w-full py-4 bg-yellow-500 text-gray-900 text-sm text-center">
+        &copy; {{ date('Y') }} Warehouse Management. All rights reserved.
+    </footer>
+
+</body>
 </html>
-

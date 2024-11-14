@@ -24,8 +24,8 @@
 
         body {
             font-family: 'Figtree', sans-serif;
-            background-color: #f3f4f6;
-            color: #374151;
+            background-color: #1F2937; /* Dark Gray Background */
+            color: #E5E7EB; /* Light Gray Text */
             display: flex;
             flex-direction: column;
             min-height: 100vh;
@@ -36,13 +36,13 @@
             flex-direction: column;
             flex: 1;
             align-items: center;
-            justify-content: flex-start; /* Ensure content starts at the top */
+            justify-content: flex-start;
+            padding-top: 2rem; /* Add space at the top */
         }
 
         header {
             width: 100%;
-            background-color: #374151;
-            color: #ffffff;
+            color: #FBBF24; /* Yellow Color for Header Text */
             padding: 1rem 0;
             text-align: center;
         }
@@ -55,11 +55,11 @@
         main {
             width: 100%;
             max-width: 900px;
-            padding: 1.5rem;
-            background-color: #ffffff;
+            padding: 2rem;
+            background-color: #2D3748; /* Darker Background for Main */
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             border-radius: 8px;
-            margin-top: 0; /* Ensure there's no extra margin at the top */
+            margin-top: 2rem;
         }
     </style>
 </head>
@@ -70,7 +70,7 @@
         <!-- Page Heading -->
         @isset($header)
             <header>
-                {{ $header }}
+                <h2 class="text-xl font-semibold">{{ $header }}</h2>
             </header>
         @endisset
 
