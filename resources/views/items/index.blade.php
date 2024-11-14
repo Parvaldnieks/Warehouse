@@ -22,6 +22,7 @@
                 <th>Description</th>
                 <th>Price</th>
                 <th>Supplier</th>
+                <th>Category</th>
                 <th>Actions</th>
             </tr>
         </thead>
@@ -32,6 +33,7 @@
                 <td>{{ $item->description }}</td>
                 <td>{{ $item->price }}€</td>
                 <td>{{ $item->supplier }}</td>
+                <td>{{ $item->category->name ?? 'No category' }}</td>
                 <td>
                     <!-- Edit link -->
                     <a href="{{ route('items.edit', $item->id) }}">Edit</a>
@@ -49,3 +51,4 @@
     </table>
 </body>
 </html>
+

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ItemController;
+use App\Http\Controllers\CategoryController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -26,7 +27,8 @@ Route::prefix('items')->name('items.')->group(function () {
     Route::get('/{item}/edit', [ItemController::class, 'edit'])->name('edit');
     Route::put('/{item}', [ItemController::class, 'update'])->name('update');
     Route::delete('/{item}', [ItemController::class, 'destroy'])->name('destroy');
-
 });
+
+Route::post('/categories', [CategoryController::class, 'store'])->name('categories.store');
 
 require __DIR__.'/auth.php';

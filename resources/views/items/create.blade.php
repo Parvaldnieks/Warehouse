@@ -17,22 +17,54 @@
         </ul>
     @endif
 
-    <!-- resources/views/items/create.blade.php -->
+    <!-- Form for creating the item -->
     <form action="{{ route('items.store') }}" method="POST">
+    @csrf
+    <div>
+        <label for="name">Item Name</label>
+        <input type="text" name="name" id="name" value="{{ old('name') }}" required>
+    </div>
+
+    <div>
+        <label for="description">Description</label>
+        <textarea name="description" id="description">{{ old('description') }}</textarea>
+    </div>
+
+    <div>
+        <label for="price">Price</label>
+        <input type="number" name="price" id="price" value="{{ old('price') }}" min="0" required>
+    </div>
+
+    <div>
+        <label for="supplier">Supplier</label>
+        <input type="text" name="supplier" id="supplier" value="{{ old('supplier') }}" required>
+    </div>
+
+    <div>
+        <label for="category_id">Category</label>
+        <select name="category_id" id="category_id" required>
+            <option value="" disabled selected>Select a category</option>
+            @foreach($categories as $category)
+                <option value="{{ $category->id }}" {{ old('category_id') == $category->id ? 'selected' : '' }}>
+                    {{ $category->name }}
+                </option>
+            @endforeach
+        </select>
+    </div>
+
+    <button type="submit">Create Item</button>
+    </form>
+
+    <!-- Form for creating a new category -->
+    <h2>Add a New Category</h2>
+    <form action="{{ route('categories.store') }}" method="POST">
         @csrf
-        <label for="name">Name:</label>
-        <input type="text" name="name" required>
-            
-        <label for="description">Description:</label>
-        <textarea name="description"></textarea>
-            
-        <label for="supplier">Supplier:</label>
-        <input type="text" name="supplier">
-            
-        <label for="price">Price:</label>
-        <input type="number" name="price" step="0.01" required>
-            
-        <button type="submit">Create Item</button>
+        <div>
+            <label for="category_name">Category Name</label>
+            <input type="text" name="name" id="category_name" required>
+        </div>
+
+        <button type="submit">Create Category</button>
     </form>
 </body>
 </html>

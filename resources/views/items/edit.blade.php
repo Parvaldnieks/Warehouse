@@ -47,8 +47,32 @@
         <input type="text" id="supplier" name="supplier" value="{{ old('supplier', $item->supplier) }}" required>
     </div>
 
+    <div>
+        <label for="category_id">Category</label>
+        <select name="category_id" id="category_id" required>
+            <option value="" disabled>Select a category</option>
+            @foreach($categories as $category)
+                <option value="{{ $category->id }}" {{ old('category_id', $item->category_id) == $category->id ? 'selected' : '' }}>
+                    {{ $category->name }}
+                </option>
+            @endforeach
+        </select>
+    </div>
+
     <button type="submit">Save Changes</button>
 </form>
+
+    <!-- Form for creating a new category -->
+    <h2>Add a New Category</h2>
+    <form action="{{ route('categories.store') }}" method="POST">
+        @csrf
+        <div>
+            <label for="category_name">Category Name</label>
+            <input type="text" name="name" id="category_name" required>
+        </div>
+
+        <button type="submit">Create Category</button>
+    </form>
 
 <a href="{{ route('items.index') }}">Back to Items List</a>
 

@@ -13,6 +13,7 @@ return new class extends Migration
             $table->string('name'); // Item name
             $table->text('description')->nullable(); // Item description
             $table->string('supplier')->nullable();
+            $table->unsignedBigInteger('category_id');
             $table->decimal('price', 8, 2)->default(0)->unsigned(); // Item price
             $table->timestamps(); // Created at and updated at timestamps
         });

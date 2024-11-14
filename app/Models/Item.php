@@ -15,11 +15,12 @@ class Item extends Model
         'description',
         'price',
         'supplier',
+        'category_id',
     ];
 
-    // Define the relationship with the Inventory model
-    public function inventories()
+    // Define the relationship with the Category model
+    public function category()
     {
-        return $this->hasMany(Inventory::class);
+        return $this->belongsTo(Category::class);
     }
 }
