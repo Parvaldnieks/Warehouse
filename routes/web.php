@@ -9,9 +9,8 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+// Updated dashboard route
+Route::get('/dashboard', [ItemController::class, 'dashboard'])->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -27,8 +26,9 @@ Route::prefix('items')->name('items.')->group(function () {
     Route::get('/{item}/edit', [ItemController::class, 'edit'])->name('edit');
     Route::put('/{item}', [ItemController::class, 'update'])->name('update');
     Route::delete('/{item}', [ItemController::class, 'destroy'])->name('destroy');
+    Route::get('/{item}', [ItemController::class, 'show'])->name('show'); // Add this line
 });
 
 Route::post('/categories', [CategoryController::class, 'store'])->name('categories.store');
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

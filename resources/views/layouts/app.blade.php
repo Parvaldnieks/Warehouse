@@ -29,6 +29,7 @@
             display: flex;
             flex-direction: column;
             min-height: 100vh;
+            
         }
 
         .main-container {
@@ -37,7 +38,7 @@
             flex: 1;
             align-items: center;
             justify-content: flex-start;
-            padding-top: 2rem; /* Add space at the top */
+            
         }
 
         header {
@@ -56,10 +57,11 @@
             width: 100%;
             max-width: 900px;
             padding: 2rem;
-            background-color: #2D3748; /* Darker Background for Main */
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            
+          
             border-radius: 8px;
             margin-top: 2rem;
+            
         }
     </style>
 </head>

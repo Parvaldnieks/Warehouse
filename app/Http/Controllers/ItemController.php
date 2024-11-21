@@ -8,11 +8,39 @@ use App\Models\Category;
 
 class ItemController extends Controller
 {
-    // Display all items
-    public function index()
+    // Display all items with optional category and quantity filters
+    public function index(Request $request)
     {
-        $items = Item::with('category')->get();
-        return view('items.index', compact('items'));
+        $categoryId = $request->input('category');
+        $quantityFilter = $request->input('quantity');
+        $categories = Category::all();
+
+        // Start query builder
+        $query = Item::with('category');
+
+        // Apply category filter if present
+        if ($categoryId) {
+            $query->where('category_id', $categoryId);
+        }
+
+        // Apply quantity filter
+        if ($quantityFilter) {
+            if ($quantityFilter == '0') {
+                // Out of stock
+                $query->where('quantity', 0);
+            } elseif ($quantityFilter == 'low') {
+                // Low stock (assuming less than 10)
+                $query->where('quantity', '<', 10);
+            } elseif ($quantityFilter == 'high') {
+                // In stock (more than 10)
+                $query->where('quantity', '>', 10);
+            }
+        }
+
+        // Get the filtered items
+        $items = $query->get();
+
+        return view('items.index', compact('items', 'categories'));
     }
 
     // Show form to create a new item
@@ -32,15 +60,17 @@ class ItemController extends Controller
             'price' => 'required|numeric|min:0',
             'supplier' => 'required|string|max:255',
             'category_id' => 'required|exists:categories,id',
+            'quantity' => 'required|integer|min:0',  // Add validation for quantity
         ]);
 
-        // Create and save item, including category_id
+        // Create and save item, including category_id and quantity
         Item::create([
             'name' => $request->name,
             'description' => $request->description,
             'price' => $request->price,
             'supplier' => $request->supplier,
             'category_id' => $request->category_id,
+            'quantity' => $request->quantity,  // Save the quantity
         ]);
 
         // Redirect to the items index page with a success message
@@ -64,17 +94,19 @@ class ItemController extends Controller
             'price' => 'required|numeric|min:0',
             'supplier' => 'required|string|max:255',
             'category_id' => 'required|exists:categories,id',
+            'quantity' => 'required|integer|min:0', // Add validation for quantity
         ]);
-
-        // Update the item with the new values, including category_id
+    
+        // Update the item with the new values
         $item->update([
             'name' => $request->name,
             'description' => $request->description,
             'price' => $request->price,
             'supplier' => $request->supplier,
             'category_id' => $request->category_id,
+            'quantity' => $request->quantity, // Update the quantity
         ]);
-
+    
         // Redirect to the items index page with a success message
         return redirect()->route('items.index')->with('success', 'Item updated successfully!');
     }
@@ -87,5 +119,25 @@ class ItemController extends Controller
 
         // Redirect back to the items index page with a success message
         return redirect()->route('items.index')->with('success', 'Item deleted successfully!');
+    }
+
+    // Dashboard
+    // Dashboard
+public function dashboard()
+{
+    $totalItems = Item::count();
+    
+    // Count of low stock items (items with less than 10 in stock)
+    $lowStockItemsCount = Item::where('quantity', '<', 10)->count();
+
+    // Pass the low stock count to the view
+    return view('dashboard', compact('totalItems', 'lowStockItemsCount'));
+}
+
+
+    // Show a specific item
+    public function show(Item $item)
+    {
+        return view('items.show', compact('item'));
     }
 }

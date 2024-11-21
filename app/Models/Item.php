@@ -16,6 +16,7 @@ class Item extends Model
         'price',
         'supplier',
         'category_id',
+        'quantity', // Add quantity to the fillable array
     ];
 
     // Define the relationship with the Category model
@@ -24,3 +25,4 @@ class Item extends Model
         return $this->belongsTo(Category::class);
     }
 }
+
