@@ -24,16 +24,16 @@ class ItemController extends Controller
         }
 
         // Apply quantity filter
-        if ($quantityFilter) {
-            if ($quantityFilter == '0') {
+        if (isset($quantityFilter)) {
+            if ($quantityFilter === '0') {
                 // Out of stock
                 $query->where('quantity', 0);
-            } elseif ($quantityFilter == 'low') {
+            } elseif ($quantityFilter === 'low') {
                 // Low stock (assuming less than 10)
                 $query->where('quantity', '<', 10);
-            } elseif ($quantityFilter == 'high') {
+            } elseif ($quantityFilter === 'high') {
                 // In stock (more than 10)
-                $query->where('quantity', '>', 10);
+                $query->where('quantity', '>=', 10);
             }
         }
 
@@ -50,6 +50,32 @@ class ItemController extends Controller
         return view('items.create', compact('categories'));
     }
 
+    // Store a newly created category
+    public function storeCategory(Request $request)
+    {
+        // Normalize the category name by trimming and converting to lowercase
+        $normalizedCategoryName = strtolower(trim($request->name));
+
+        // Check for duplicates (case-insensitive)
+        $existingCategory = Category::whereRaw('LOWER(TRIM(name)) = ?', [$normalizedCategoryName])->first();
+
+        if ($existingCategory) {
+            return redirect()->back()->withErrors(['name' => 'Category already exists.']);
+        }
+
+        // Validate the category name
+        $request->validate([
+            'name' => 'required|string|max:255',
+        ]);
+
+        // Create the category
+        Category::create([
+            'name' => $request->name, // Save the original name
+        ]);
+
+        return redirect()->route('categories.index')->with('success', 'Category created successfully!');
+    }
+
     // Store a newly created item
     public function store(Request $request)
     {
@@ -60,7 +86,7 @@ class ItemController extends Controller
             'price' => 'required|numeric|min:0',
             'supplier' => 'required|string|max:255',
             'category_id' => 'required|exists:categories,id',
-            'quantity' => 'required|integer|min:0',  // Add validation for quantity
+            'quantity' => 'required|integer|min:0',
         ]);
 
         // Create and save item, including category_id and quantity
@@ -70,7 +96,7 @@ class ItemController extends Controller
             'price' => $request->price,
             'supplier' => $request->supplier,
             'category_id' => $request->category_id,
-            'quantity' => $request->quantity,  // Save the quantity
+            'quantity' => $request->quantity,
         ]);
 
         // Redirect to the items index page with a success message
@@ -94,9 +120,9 @@ class ItemController extends Controller
             'price' => 'required|numeric|min:0',
             'supplier' => 'required|string|max:255',
             'category_id' => 'required|exists:categories,id',
-            'quantity' => 'required|integer|min:0', // Add validation for quantity
+            'quantity' => 'required|integer|min:0',
         ]);
-    
+
         // Update the item with the new values
         $item->update([
             'name' => $request->name,
@@ -104,9 +130,9 @@ class ItemController extends Controller
             'price' => $request->price,
             'supplier' => $request->supplier,
             'category_id' => $request->category_id,
-            'quantity' => $request->quantity, // Update the quantity
+            'quantity' => $request->quantity,
         ]);
-    
+
         // Redirect to the items index page with a success message
         return redirect()->route('items.index')->with('success', 'Item updated successfully!');
     }
@@ -122,18 +148,16 @@ class ItemController extends Controller
     }
 
     // Dashboard
-    // Dashboard
-public function dashboard()
-{
-    $totalItems = Item::count();
-    
-    // Count of low stock items (items with less than 10 in stock)
-    $lowStockItemsCount = Item::where('quantity', '<', 10)->count();
+    public function dashboard()
+    {
+        $totalItems = Item::count();
 
-    // Pass the low stock count to the view
-    return view('dashboard', compact('totalItems', 'lowStockItemsCount'));
-}
+        // Count of low stock items (items with less than 10 in stock)
+        $lowStockItemsCount = Item::where('quantity', '<', 10)->count();
 
+        // Pass the low stock count to the view
+        return view('dashboard', compact('totalItems', 'lowStockItemsCount'));
+    }
 
     // Show a specific item
     public function show(Item $item)
