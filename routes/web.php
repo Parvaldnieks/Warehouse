@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ItemController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\CategoryController;
 use Illuminate\Support\Facades\Route;
 
@@ -26,9 +27,16 @@ Route::prefix('items')->name('items.')->group(function () {
     Route::get('/{item}/edit', [ItemController::class, 'edit'])->name('edit');
     Route::put('/{item}', [ItemController::class, 'update'])->name('update');
     Route::delete('/{item}', [ItemController::class, 'destroy'])->name('destroy');
-    Route::get('/{item}', [ItemController::class, 'show'])->name('show'); // Add this line
+    Route::get('/{item}', [ItemController::class, 'show'])->name('show');
 });
 
+// Order routes
+// Order routes
+Route::get('/orders/create', [OrderController::class, 'create'])->name('orders.create');
+Route::resource('orders', OrderController::class)->only(['index', 'store', 'show']);
+Route::delete('/orders/{order}', [OrderController::class, 'destroy'])->name('orders.destroy');
+
+// Create new category route
 Route::post('/categories', [CategoryController::class, 'store'])->name('categories.store');
 
 require __DIR__ . '/auth.php';

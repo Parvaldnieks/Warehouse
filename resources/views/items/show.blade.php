@@ -1,75 +1,58 @@
 <x-app-layout>
-    <body class="bg-gray-900 text-gray-200">
-        <div class="max-w-4xl mx-auto p-6">
-            <!-- Item Title -->
-            <h1 class="text-4xl font-bold text-center text-yellow-400 mb-8 uppercase">{{ $item->name }}</h1>
+    <!-- Product Information -->
+    <div class="max-w-4xl mx-auto bg-gray-800 p-6 rounded-lg shadow-md text-gray-300 border-4 border-yellow-400">
+        <h1 class="text-2xl font-bold text-yellow-400 mb-4">{{ $item->name }}</h1>
+        <p class="text-lg mb-2">Description: {{ $item->description }}</p>
+        <p class="text-lg mb-2">Price: <span class="text-yellow-300 font-semibold">${{ $item->price }}</span></p>
+        <p class="text-lg mb-2">Category: {{ $item->category->name }}</p>
+        <p class="text-lg mb-4">Stock: 
+            @if ($item->quantity > 0)
+                <span class="text-green-400 font-semibold">{{ $item->quantity }}</span>
+            @else
+                <span class="text-red-400 font-semibold">Out of Stock</span>
+            @endif
+        </p>
+    </div>
 
-            <!-- Item Details Card -->
-            <div class="bg-gray-800 border-2 border-yellow-400 rounded-lg shadow-lg p-6 space-y-6">
-                <!-- Description -->
-                <div>
-                    <h2 class="text-2xl font-semibold text-yellow-400">Description:</h2>
-                    <p class="text-gray-300 text-lg">{{ $item->description }}</p>
-                </div>
+    <!-- Action Buttons -->
+    <div class="flex justify-center space-x-4 mt-6">
+        <!-- Back Button -->
+        <a href="{{ route('items.index') }}" 
+           class="bg-yellow-400 text-gray-900 font-semibold rounded-md hover:bg-yellow-500 px-4 py-2 shadow-md">
+            Back to Items
+        </a>
 
-                <!-- Price -->
-                <div>
-                    <h2 class="text-2xl font-semibold text-yellow-400">Price:</h2>
-                    <p class="text-gray-300 text-lg">{{ $item->price }}€</p>
-                </div>
+        <!-- Edit Button -->
+        <a href="{{ route('items.edit', $item->id) }}" 
+           class="bg-blue-500 text-white font-semibold rounded-md hover:bg-blue-600 px-4 py-2 shadow-md">
+            Edit
+        </a>
 
-                <!-- Supplier -->
-                <div>
-                    <h2 class="text-2xl font-semibold text-yellow-400">Supplier:</h2>
-                    <p class="text-gray-300 text-lg">{{ $item->supplier }}</p>
-                </div>
+        <!-- Delete Button -->
+        <form action="{{ route('items.destroy', $item->id) }}" method="POST" 
+              onsubmit="return confirm('Are you sure you want to delete this item?')">
+            @csrf
+            @method('DELETE')
+            <button type="submit" 
+                    class="bg-red-500 text-white font-semibold rounded-md hover:bg-red-600 px-4 py-2 shadow-md">
+                Delete
+            </button>
+        </form>
 
-                <!-- Category -->
-                <div>
-                    <h2 class="text-2xl font-semibold text-yellow-400">Category:</h2>
-                    <p class="text-gray-300 text-lg">{{ $item->category->name ?? 'No category' }}</p>
-                </div>
-
-                <!-- Quantity/Stock Status -->
-                <div>
-                    <h2 class="text-2xl font-semibold text-yellow-400">Stock Status:</h2>
-                    <p class="text-gray-300 text-lg">
-                        @if ($item->quantity == 0)
-                            <span class="text-red-500">Out of Stock</span>
-                        @elseif ($item->quantity < 10)
-                            <span class="text-orange-400">Low Stock ({{ $item->quantity }})</span>
-                        @else
-                            <span class="text-green-400">In Stock ({{ $item->quantity }})</span>
-                        @endif
-                    </p>
-                </div>
-
-                <!-- Action Buttons -->
-                <div class="flex justify-center space-x-4">
-                    <!-- Back Button -->
-                    <a href="{{ route('items.index') }}" 
-                       class="bg-yellow-400 text-gray-900 font-semibold rounded-md hover:bg-yellow-500 px-4 py-2 shadow-md">
-                        Back to Items
-                    </a>
-
-                    <!-- Edit Button -->
-                    <a href="{{ route('items.edit', $item->id) }}" 
-                       class="bg-blue-500 text-white font-semibold rounded-md hover:bg-blue-600 px-4 py-2 shadow-md">
-                        Edit
-                    </a>
-
-                    <!-- Delete Button -->
-                    <form action="{{ route('items.destroy', $item->id) }}" method="POST" 
-                          onsubmit="return confirm('Are you sure you want to delete this item?')">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" 
-                                class="bg-red-500 text-white font-semibold rounded-md hover:bg-red-600 px-4 py-2 shadow-md">
-                            Delete
-                        </button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </body>
+        <!-- Order Button -->
+        @if ($item->quantity > 0)
+            <form action="{{ route('orders.create') }}" method="GET">
+                <input type="hidden" name="product_id" value="{{ $item->id }}">
+                <button type="submit" 
+                        class="bg-green-500 text-white font-semibold rounded-md hover:bg-green-600 px-4 py-2 shadow-md">
+                    Order
+                </button>
+            </form>
+        @else
+            <button disabled 
+                    class="bg-gray-500 text-gray-200 font-semibold rounded-md px-4 py-2 shadow-md">
+                Out of Stock
+            </button>
+        @endif
+    </div>
 </x-app-layout>
