@@ -45,7 +45,7 @@
                     @csrf
                     @method('DELETE') <!-- Using DELETE for removing the order -->
                     <button type="submit" class="bg-red-500 text-white font-semibold rounded-md hover:bg-red-600 px-6 py-2 shadow-md">
-                        Delete Order
+                        Cancel Order
                     </button>
                 </form>
             @else

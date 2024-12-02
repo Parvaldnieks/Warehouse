@@ -31,7 +31,6 @@ Route::prefix('items')->name('items.')->group(function () {
 });
 
 // Order routes
-// Order routes
 Route::get('/orders/create', [OrderController::class, 'create'])->name('orders.create');
 Route::resource('orders', OrderController::class)->only(['index', 'store', 'show']);
 Route::delete('/orders/{order}', [OrderController::class, 'destroy'])->name('orders.destroy');

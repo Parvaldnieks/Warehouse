@@ -11,7 +11,7 @@
         </div>
 
         <!-- Options Row (Items in a Straight Line) -->
-        <div class="grid grid-cols-3 gap-6 mt-6">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
             <!-- Total Products Box -->
             <div class="bg-gradient-to-r from-yellow-600 to-yellow-500 p-6 rounded-lg shadow-2xl hover:shadow-2xl transform hover:scale-105 transition-all duration-300">
                 <h3 class="text-xl font-semibold text-white">Total Products</h3>
@@ -23,6 +23,9 @@
             <div class="bg-gradient-to-r from-yellow-500 to-yellow-500 p-6 rounded-lg shadow-2xl hover:shadow-2xl transform hover:scale-105 transition-all duration-300">
                 <h3 class="text-xl font-semibold text-white">Recent Orders</h3>
                 <p class="text-gray-100">View and process recent warehouse orders.</p>
+
+                <!-- Display the count of recent orders -->
+                <p class="mt-4 text-3xl font-bold text-white">{{ $recentOrdersCount }}</p>
             </div>
             
             <!-- Low Stock Items Box -->

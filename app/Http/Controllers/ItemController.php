@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Item;
 use App\Models\Category;
+use App\Models\Order;
 
 class ItemController extends Controller
 {
@@ -147,16 +148,16 @@ class ItemController extends Controller
         return redirect()->route('items.index')->with('success', 'Item deleted successfully!');
     }
 
-    // Dashboard
+    // Dashboard - Returns counts for items, low stock, and recent orders
     public function dashboard()
     {
         $totalItems = Item::count();
-
-        // Count of low stock items (items with less than 10 in stock)
         $lowStockItemsCount = Item::where('quantity', '<', 10)->count();
 
-        // Pass the low stock count to the view
-        return view('dashboard', compact('totalItems', 'lowStockItemsCount'));
+        // Fetch the count of the 5 most recent orders
+        $recentOrdersCount = Order::latest()->take(5)->count(); 
+
+        return view('dashboard', compact('totalItems', 'lowStockItemsCount', 'recentOrdersCount'));
     }
 
     // Show a specific item
@@ -164,4 +165,5 @@ class ItemController extends Controller
     {
         return view('items.show', compact('item'));
     }
+
 }

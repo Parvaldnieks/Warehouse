@@ -104,4 +104,14 @@ class OrderController extends Controller
     // Redirect back with a success message
     return redirect()->route('orders.index')->with('success', 'Order deleted successfully.');
 }
+
+public function dashboard()
+{
+    // Fetch total items, low stock items, and recent orders
+    $totalItems = Item::count();
+    $lowStockItemsCount = Item::where('quantity', '<=', 10)->count();
+    $recentOrders = Order::latest()->take(5)->get(); // Fetch 5 most recent orders
+
+    return view('dashboard', compact('totalItems', 'lowStockItemsCount', 'recentOrders'));
+}
 }

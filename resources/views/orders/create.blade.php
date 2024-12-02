@@ -1,4 +1,3 @@
-<!-- resources/views/orders/create.blade.php -->
 <x-app-layout>
     <div class="max-w-4xl mx-auto p-6 bg-gray-800 rounded-lg shadow-md text-gray-300 border-4 border-yellow-400">
         <h1 class="text-2xl font-bold text-yellow-400 mb-6 text-center">Place Your Order</h1>
@@ -15,11 +14,9 @@
         @endif
 
         <!-- Product Details Section -->
-        <div class="flex items-center mb-6">
-            <div class="w-32 h-32 bg-gray-700 rounded-md overflow-hidden mr-6">
-                <img src="{{ $item->image_url }}" alt="{{ $item->name }}" class="object-cover w-full h-full">
-            </div>
-            <div>
+        <div class="flex flex-wrap items-center mb-6">
+            
+            <div class="flex-1">
                 <h2 class="text-xl font-semibold text-yellow-400">{{ $item->name }}</h2>
                 <p class="text-lg text-gray-300">Price: <span class="text-yellow-300 font-semibold">${{ $item->price }}</span></p>
                 <p class="text-sm text-gray-500">Stock: 
@@ -43,7 +40,7 @@
             <div class="mb-4">
                 <label for="quantity" class="block text-sm font-semibold text-gray-300 mb-2">Quantity</label>
                 <input type="number" name="items[0][quantity]" id="quantity" value="1" min="1" 
-                       class="w-24 px-4 py-2 bg-gray-700 text-gray-100 border border-gray-600 rounded-md" required>
+                       class="w-full sm:w-24 px-4 py-2 bg-gray-700 text-gray-100 border border-gray-600 rounded-md" required>
             </div>
 
             <!-- Delivery Address -->

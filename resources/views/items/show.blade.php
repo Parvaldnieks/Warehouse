@@ -15,16 +15,16 @@
     </div>
 
     <!-- Action Buttons -->
-    <div class="flex justify-center space-x-4 mt-6">
+    <div class="flex flex-wrap justify-center space-x-4 mt-6">
         <!-- Back Button -->
         <a href="{{ route('items.index') }}" 
-           class="bg-yellow-400 text-gray-900 font-semibold rounded-md hover:bg-yellow-500 px-4 py-2 shadow-md">
+           class="bg-yellow-400 text-gray-900 font-semibold rounded-md hover:bg-yellow-500 px-4 py-2 shadow-md mb-2 sm:mb-0">
             Back to Items
         </a>
 
         <!-- Edit Button -->
         <a href="{{ route('items.edit', $item->id) }}" 
-           class="bg-blue-500 text-white font-semibold rounded-md hover:bg-blue-600 px-4 py-2 shadow-md">
+           class="bg-blue-500 text-white font-semibold rounded-md hover:bg-blue-600 px-4 py-2 shadow-md mb-2 sm:mb-0">
             Edit
         </a>
 
@@ -34,7 +34,7 @@
             @csrf
             @method('DELETE')
             <button type="submit" 
-                    class="bg-red-500 text-white font-semibold rounded-md hover:bg-red-600 px-4 py-2 shadow-md">
+                    class="bg-red-500 text-white font-semibold rounded-md hover:bg-red-600 px-4 py-2 shadow-md mb-2 sm:mb-0">
                 Delete
             </button>
         </form>
@@ -44,13 +44,13 @@
             <form action="{{ route('orders.create') }}" method="GET">
                 <input type="hidden" name="product_id" value="{{ $item->id }}">
                 <button type="submit" 
-                        class="bg-green-500 text-white font-semibold rounded-md hover:bg-green-600 px-4 py-2 shadow-md">
+                        class="bg-green-500 text-white font-semibold rounded-md hover:bg-green-600 px-4 py-2 shadow-md mb-2 sm:mb-0">
                     Order
                 </button>
             </form>
         @else
             <button disabled 
-                    class="bg-gray-500 text-gray-200 font-semibold rounded-md px-4 py-2 shadow-md">
+                    class="bg-gray-500 text-gray-200 font-semibold rounded-md px-4 py-2 shadow-md mb-2 sm:mb-0">
                 Out of Stock
             </button>
         @endif
