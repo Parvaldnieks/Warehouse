@@ -16,9 +16,6 @@
 
         <!-- Product Details Section -->
         <div class="flex items-center mb-6">
-            <div class="w-32 h-32 bg-gray-700 rounded-md overflow-hidden mr-6">
-                <img src="{{ $item->image_url }}" alt="{{ $item->name }}" class="object-cover w-full h-full">
-            </div>
             <div>
                 <h2 class="text-xl font-semibold text-yellow-400">{{ $item->name }}</h2>
                 <p class="text-lg text-gray-300">Price: <span class="text-yellow-300 font-semibold">${{ $item->price }}</span></p>
@@ -46,12 +43,15 @@
                        class="w-24 px-4 py-2 bg-gray-700 text-gray-100 border border-gray-600 rounded-md" required>
             </div>
 
-            <!-- Delivery Address -->
+           <!-- Delivery Address -->
             <div class="mb-4">
                 <label for="address" class="block text-sm font-semibold text-gray-300 mb-2">Delivery Address</label>
-                <textarea name="address" id="address" rows="3" 
-                          class="w-full px-4 py-2 bg-gray-700 text-gray-100 border border-gray-600 rounded-md" required>
-                </textarea>
+                <textarea 
+                    name="address" 
+                    id="address" 
+                    rows="3"
+                    class="w-full px-4 py-2 bg-gray-700 text-gray-100 border border-gray-600 rounded-md" 
+                    required></textarea>
             </div>
 
             <!-- Payment Method -->

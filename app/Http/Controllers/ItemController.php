@@ -53,26 +53,31 @@ class ItemController extends Controller
     // Store a newly created category
     public function storeCategory(Request $request)
     {
+        // Validate the category name
+        $request->validate([
+            'name' => [
+                'required',
+                'string',
+                'max:20',
+                'regex:/^[a-zA-Z]+$/', // Only letters allowed
+            ],
+        ]);
+    
         // Normalize the category name by trimming and converting to lowercase
         $normalizedCategoryName = strtolower(trim($request->name));
-
+    
         // Check for duplicates (case-insensitive)
         $existingCategory = Category::whereRaw('LOWER(TRIM(name)) = ?', [$normalizedCategoryName])->first();
-
+    
         if ($existingCategory) {
             return redirect()->back()->withErrors(['name' => 'Category already exists.']);
         }
-
-        // Validate the category name
-        $request->validate([
-            'name' => 'required|string|max:255',
-        ]);
-
+    
         // Create the category
         Category::create([
-            'name' => $request->name, // Save the original name
+            'name' => ucfirst($normalizedCategoryName), // Save the name with the first letter capitalized
         ]);
-
+    
         return redirect()->route('categories.index')->with('success', 'Category created successfully!');
     }
 
@@ -85,21 +90,23 @@ class ItemController extends Controller
             'description' => 'required|string|max:255',
             'price' => 'required|numeric|min:0',
             'supplier' => 'required|string|max:255',
-            'category_id' => 'required|exists:categories,id',
+            'category_id' => [
+                'required',
+                'exists:categories,id', // Ensure category_id exists in the categories table
+                function ($attribute, $value, $fail) {
+                    // Check if the associated category has a valid name
+                    $category = Category::find($value);
+                    if ($category && !preg_match('/^[a-zA-Z]+$/', $category->name)) {
+                        $fail('The selected category has an invalid name.');
+                    }
+                },
+            ],
             'quantity' => 'required|integer|min:0',
         ]);
 
-        // Create and save item, including category_id and quantity
-        Item::create([
-            'name' => $request->name,
-            'description' => $request->description,
-            'price' => $request->price,
-            'supplier' => $request->supplier,
-            'category_id' => $request->category_id,
-            'quantity' => $request->quantity,
-        ]);
+        // Create and save the item
+        Item::create($request->only(['name', 'description', 'price', 'supplier', 'category_id', 'quantity']));
 
-        // Redirect to the items index page with a success message
         return redirect()->route('items.index')->with('success', 'Item created successfully!');
     }
 
@@ -119,21 +126,23 @@ class ItemController extends Controller
             'description' => 'required|string|max:255',
             'price' => 'required|numeric|min:0',
             'supplier' => 'required|string|max:255',
-            'category_id' => 'required|exists:categories,id',
+            'category_id' => [
+                'required',
+                'exists:categories,id', // Ensure category_id exists in the categories table
+                function ($attribute, $value, $fail) {
+                    // Check if the associated category has a valid name
+                    $category = Category::find($value);
+                    if ($category && !preg_match('/^[a-zA-Z]+$/', $category->name)) {
+                        $fail('The selected category has an invalid name.');
+                    }
+                },
+            ],
             'quantity' => 'required|integer|min:0',
         ]);
 
-        // Update the item with the new values
-        $item->update([
-            'name' => $request->name,
-            'description' => $request->description,
-            'price' => $request->price,
-            'supplier' => $request->supplier,
-            'category_id' => $request->category_id,
-            'quantity' => $request->quantity,
-        ]);
+        // Update the item
+        $item->update($request->only(['name', 'description', 'price', 'supplier', 'category_id', 'quantity']));
 
-        // Redirect to the items index page with a success message
         return redirect()->route('items.index')->with('success', 'Item updated successfully!');
     }
 
